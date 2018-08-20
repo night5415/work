@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/zcAABBRoQAAAP8AIdPrAICx7QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAACIhEREQAAAAAiERERERESIAARERERERIgAxERQREREiAzMzERFBACIDMzMTMxMAAgMzMTMxMwAAAABVVVVTMAAAIlVVAAAwAAAlIlVQVVMAACUlVQVVMwAAAiJVBQMzAAADMzMzM1UAAAAzMzAFVQD//wAAP/8AAAB/AACAAAAA4AAAAMAAAACADAAAgA4AAIAPAADwBwAAwAcAAMADAADAAwAA4CMAAOADAADwYwAA"
+        rel="icon" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="adal.js"></script>
+    <title>Azure Login</title>
+</head>
+
+<body>
+    <input id="btn" type="button" value="Log In">
+    <input id="btnLogOut" type="button" value="Log Out">
+    <script>
+        window.config = {
+            clientId: 'e16d31b7-7370-47d2-9e00-62b77344988a',
+            popUp: true,
+            cacheLocation: 'localStorage' // Default is sessionStorage
+        };
+
+        config.callback = function (e, f) {
+            var me = this,
+                x = document.getElementById('btn');
+            x.click();
+        };
+
+        var authenticationContext = new AuthenticationContext(config);
+
+        document.getElementById('btnLogOut').addEventListener('click', () => {
+            authenticationContext.logOut();
+        });
+        document.getElementById('btn')
+            .addEventListener('click', () => {
+                var me = this,
+                    user = authenticationContext.getCachedUser();
+
+                if (user) {
+                    console.log('cached', user);
+                } else {
+                    authenticationContext.login();
+                }
+            });
+
+        function test(p) {
+            console.log(p)
+        }
+    </script>
+</body>
+
+</html>
